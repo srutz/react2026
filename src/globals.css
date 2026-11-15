@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+body {
+    @apply w-screen h-screen flex flex-col;
+}
+
+#root {
+    @apply h-1 grow flex flex-col p-2;
+}
