@@ -20,4 +20,6 @@ React Compiler opt in/out: edit the `reactCompilerOptIn(filename)` callback in `
 - **Styling/UI:** Tailwind CSS 4, shadcn (with `@base-ui/react`), `tw-animate-css`, `class-variance-authority`, `cn`, Geist font
 - **Icons:** `lucide-react`, `react-icons`
 - **Hooks:** `@uidotdev/usehooks`
+- **Zod:** `zod`
+- **zustand:** `zustand`
 - **Tooling:** ESLint (react-hooks, react-refresh, typescript-eslint), Prettier (+ organize-imports)
