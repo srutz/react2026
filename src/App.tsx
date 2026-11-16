@@ -1,8 +1,10 @@
+import { useBattery } from '@uidotdev/usehooks';
+import { FancyBatteryDisplay } from './FancyBatteryDisplay';
 
 export function App() {
-	return (
-  	<div className="flex flex-col overflow-y-auto items-start">
-      <div>Hello World</div>
-		</div>
-	);
+  const { charging, level } = useBattery(); // reaktives listening
+  return (
+	<FancyBatteryDisplay charging={charging} level={level} />
+  )
 }
+
