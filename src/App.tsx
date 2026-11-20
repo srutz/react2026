@@ -4,7 +4,7 @@ import { ProductDisplay } from "./components/ProductDisplay";
 import type { Product } from "./data/productschema";
 import { QueryClient, QueryClientProvider, useQuery} from "@tanstack/react-query"
 import { ReactQueryDevtools} from "@tanstack/react-query-devtools"
-import { Button } from "@base-ui/react";
+import { Button } from "./components/ui/button";
 
 const queryClient = new QueryClient() // << cache objekt
 
@@ -18,7 +18,8 @@ async function loadProduct(pid: string) {
 function useProduct(pid: string) {
   return useQuery({
     queryKey: [ "product", pid],
-    queryFn: () => loadProduct(pid)
+    queryFn: () => loadProduct(pid),
+    staleTime: 5_000,
   })
 }
 
@@ -33,7 +34,6 @@ const routes: RouteObject[] = [
           queryKey: [ "product", pid],
           queryFn: () => loadProduct(pid || "1"),
           staleTime: 5_000,
-          gcTime: 5_000
         })
         return null;
       }
@@ -46,12 +46,15 @@ function ProductPage() {
   const { pid } = useParams();
   const navigate = useNavigate();
   const { data: product } = useProduct(pid || "1");
+  console.log("render page", product?.id)
   if (product == null) return <div>Kein produkt</div>
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-2">
         <Button onClick={() => navigate("/products/" 
-          + (Number.parseInt(pid||"1") +1))}>Next</Button>
+          + (Number.parseInt(pid||"1") - 1))}>Prev</Button>
+        <Button onClick={() => navigate("/products/" 
+          + (Number.parseInt(pid||"1") + 1))}>Next</Button>
         </div>
       <ProductDisplay product={product} />
     </div>
