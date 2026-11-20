@@ -1,0 +1,7 @@
+export { ProductGallery } from "./ProductGallery"
+export { ProductRating } from "./ProductRating"
+export { ProductPrice } from "./ProductPrice"
+export { ProductStock } from "./ProductStock"
+export { ProductTags } from "./ProductTags"
+export { ProductSpecs } from "./ProductSpecs"
+export { ProductReviews } from "./ProductReviews"
