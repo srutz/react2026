@@ -19,7 +19,8 @@ function useProduct(pid: string) {
   return useQuery({
     queryKey: [ "product", pid],
     queryFn: () => loadProduct(pid),
-    staleTime: 5_000,
+    staleTime: 50_000,
+    gcTime: 100_000,
   })
 }
 
@@ -33,7 +34,8 @@ const routes: RouteObject[] = [
         await queryClient.ensureQueryData({ // <- in den cache laden
           queryKey: [ "product", pid],
           queryFn: () => loadProduct(pid || "1"),
-          staleTime: 5_000,
+          staleTime: 50_000,
+          gcTime: 100_000,
         })
         return null;
       }
