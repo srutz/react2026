@@ -3,14 +3,21 @@ import { QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools} from "@tanstack/react-query-devtools"
 import { queryClient } from "./lib/queryClient"
 import { HomePage } from "./pages/HomePage"
-import { HelloPage } from "./pages/HelloPage"
-import { ProductPage, productLoader } from "./pages/ProductPage"
+import HelloPage from "./pages/HelloPage"
+
 
 const routes: RouteObject[] = [
   { path: "/", element: <Main></Main>, children: [
-    { path: "/", element: <HomePage/>},
-    { path: "/hello", element: <HelloPage/>},
-    { path: "/products/:pid", element: <ProductPage/>, loader: productLoader },
+    { path: "/", element: <HomePage/> },
+    { path: "/hello", element: <HelloPage />
+    },
+    { path: "/products/:pid", 
+        /* lazy load von Route-Component UND(!) loader */
+        lazy: async () => {
+          const { ProductPage, productLoader } = await import("./pages/ProductPage");
+          return { Component: ProductPage, loader: productLoader }
+        }
+    }
   ]},
 ]
 const router = createBrowserRouter(routes);

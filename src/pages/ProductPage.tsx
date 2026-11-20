@@ -54,3 +54,5 @@ export function ProductPage() {
     </div>
   )
 }
+
+export default ProductPage;
