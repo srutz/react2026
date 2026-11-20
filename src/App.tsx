@@ -6,7 +6,14 @@ import { QueryClient, QueryClientProvider, useQuery} from "@tanstack/react-query
 import { ReactQueryDevtools} from "@tanstack/react-query-devtools"
 import { Button } from "./components/ui/button";
 
-const queryClient = new QueryClient() // << cache objekt
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 3_600 * 1_000,
+      staleTime: 3_600 * 1_000
+    }    
+  }
+}) // << cache objekt
 
 async function loadProduct(pid: string) {
   const res = await fetch("https://dummyjson.com/products/" 
@@ -19,8 +26,6 @@ function useProduct(pid: string) {
   return useQuery({
     queryKey: [ "product", pid],
     queryFn: () => loadProduct(pid),
-    staleTime: 50_000,
-    gcTime: 100_000,
   })
 }
 
@@ -34,8 +39,6 @@ const routes: RouteObject[] = [
         await queryClient.ensureQueryData({ // <- in den cache laden
           queryKey: [ "product", pid],
           queryFn: () => loadProduct(pid || "1"),
-          staleTime: 50_000,
-          gcTime: 100_000,
         })
         return null;
       }
