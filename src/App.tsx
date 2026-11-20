@@ -1,5 +1,5 @@
 import { useBattery } from '@uidotdev/usehooks';
-import { FancyBatteryDisplay } from './FancyBatteryDisplay';
+import { FancyBatteryDisplay } from './battery/FancyBatteryDisplay';
 
 export function App() {
   const { charging, level } = useBattery(); // reaktives listening
