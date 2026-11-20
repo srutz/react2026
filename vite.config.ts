@@ -10,7 +10,7 @@ import { defineConfig } from "vite";
  * (Per component you can also use the "use no memo" directive.)
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const reactCompilerOptIn = (filename: string): boolean => {
+const reactCompilerOptIn = (_filename: string): boolean => {
 	//if (filename.includes("/src/components/ui/")) return false; // opt out: shadcn components
 	return true; // opt in: everything else
 };
@@ -20,7 +20,7 @@ export default defineConfig({
 	plugins: [
 		tailwindcss(),
 		react(),
-		//babel({ presets: [reactCompilerPreset({ sources: reactCompilerOptIn })] }),
+		babel({ presets: [reactCompilerPreset({ sources: reactCompilerOptIn })] }),
 	],
 	resolve: {
 		alias: {

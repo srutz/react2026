@@ -16,9 +16,6 @@ const routes: RouteObject[] = [
 const router = createBrowserRouter(routes);
 
 export function App() { return <RouterProvider router={router}/> }
-function delay(ms: number) { return new Promise((resolve) => 
-  setTimeout(resolve, ms)
-)}
 
 
 function Main() {
