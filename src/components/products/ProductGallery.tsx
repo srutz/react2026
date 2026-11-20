@@ -7,6 +7,7 @@ export function ProductGallery({ images, title }: { images: string[]; title: str
 
   return (
     <div className="flex flex-col gap-3">
+      {!false && (
       <div className="aspect-square overflow-hidden rounded-xl bg-gradient-to-br from-muted to-muted/40 ring-1 ring-foreground/10">
         {current && (
           <img
@@ -16,6 +17,7 @@ export function ProductGallery({ images, title }: { images: string[]; title: str
           />
         )}
       </div>
+      )}
       {images.length > 1 && (
         <div className="flex gap-2 overflow-x-auto">
           {images.map((src, i) => (
@@ -24,7 +26,7 @@ export function ProductGallery({ images, title }: { images: string[]; title: str
               type="button"
               onClick={() => setActive(i)}
               className={cn(
-                "size-16 shrink-0 overflow-hidden rounded-lg bg-muted ring-1 ring-foreground/10 transition",
+                "size-4 shrink-0 overflow-hidden rounded-lg bg-muted ring-1 ring-foreground/10 transition",
                 i === active ? "ring-2 ring-primary" : "opacity-60 hover:opacity-100"
               )}
             >

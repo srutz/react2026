@@ -1,5 +1,5 @@
 
-import { createBrowserRouter, Link, Outlet, RouterProvider, type RouteObject } from "react-router"
+import { createBrowserRouter, Link, Outlet, RouterProvider, useParams, type RouteObject } from "react-router"
 import { ProductDisplay } from "./components/ProductDisplay";
 import type { Product } from "./data/productschema";
 import { useEffect, useState } from "react";
@@ -8,21 +8,28 @@ const routes: RouteObject[] = [
   { path: "/", element: <Main></Main>, children: [
     { path: "/", element: <div>Nested Main</div>},
     { path: "/hello", element: <div>Hello</div>},
-    { path: "/products/:id", element: <ProductPage/>}
+    { path: "/products/:pid", element: <ProductPage/>}
   ]},
 ]
 const router = createBrowserRouter(routes);
 export function App() { return <RouterProvider router={router}/> }
+function delay(ms: number) { return new Promise((resolve) => 
+  setTimeout(resolve, ms)
+)}
 
 function ProductPage() {
   const [ product, setProduct] = useState<Product|null>(null)
+  const params = useParams<{ pid: string }>();
+
   useEffect(() => {
     (async () => {
-      const res = await fetch("https://dummyjson.com/products/" + 17)
+      await delay(3_000)
+      const res = await fetch("https://dummyjson.com/products/" 
+        + encodeURIComponent(params.pid || "1"))
       const product = (await res.json()) as Product;
       setProduct(product);
     })()
-  }, [])
+  }, [ params.pid ])
   if (product == null) return <div>Kein produkt</div>
   return <ProductDisplay product={product} />
 }

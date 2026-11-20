@@ -20,7 +20,7 @@ export default defineConfig({
 	plugins: [
 		tailwindcss(),
 		react(),
-		babel({ presets: [reactCompilerPreset({ sources: reactCompilerOptIn })] }),
+		//babel({ presets: [reactCompilerPreset({ sources: reactCompilerOptIn })] }),
 	],
 	resolve: {
 		alias: {
