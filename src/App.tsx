@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { useQuotes } from "./hooks/useQuotes";
+import { useEffect, useState } from "react";
+import { PAGE_SIZE, usePrefetchQuotes, useQuotes, type Quote } from "./hooks/useQuotes";
 import { Button } from "./components/ui/button";
 import type { ZodError } from "zod";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function App() {
   return (
@@ -11,14 +12,15 @@ export function App() {
   )
 }
 
-const PAGE_SIZE = 3
 
 function Quotes() {
+  const queryClient = useQueryClient()
   const [page, setPage] = useState(1)
   const { isLoading, data, refetch: reload, error } = useQuotes({ 
     limit: PAGE_SIZE,
     offset: (page - 1) * PAGE_SIZE
   })
+
   if (error) {
     const e = error as ZodError
     return <pre>{JSON.stringify(e.issues, null, 4)}</pre>
@@ -26,15 +28,24 @@ function Quotes() {
   if (isLoading || !data) {
     return <div>laden....</div>
   }
+  const clearit = function() {
+    queryClient.invalidateQueries({
+      queryKey: [ "quotes" ],
+    })
+  }
   return (
     <ul>
       <div className="flex gap-2 bg-orange-100">
+        Page={page}
         <Button onClick={() => reload()}>Reload</Button>
+        <Button onClick={clearit}>Clear cache</Button>
         <Button disabled={page <= 1} onClick={() => setPage(page - 1)}
           >Prev</Button>
-        <Button onClick={() => setPage(page + 1)}>Next</Button>
+        <Button onClick={() => {
+          setPage(page + 1)
+        }}>Next</Button>
       </div>
-      {(data.quotes).map((q) => <Quote key={q.id} quote={q}/>)}
+      {qs}
     </ul>
   )
 }
