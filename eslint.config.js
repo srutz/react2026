@@ -6,7 +6,7 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-	globalIgnores(["dist", "src/components/ui"]),
+	globalIgnores(["dist", "src/components/ui", "src/routeTree.gen.ts"]),
 	{
 		files: ["**/*.{ts,tsx}"],
 		extends: [
@@ -18,5 +18,10 @@ export default defineConfig([
 		languageOptions: {
 			globals: globals.browser,
 		},
+	},
+	{
+		// route files export `Route` alongside components
+		files: ["src/routes/**"],
+		rules: { "react-refresh/only-export-components": "off" },
 	},
 ]);

@@ -1,6 +1,7 @@
 import babel from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import path from "path";
 import { defineConfig } from "vite";
 
@@ -18,6 +19,8 @@ const reactCompilerOptIn = (_filename: string): boolean => {
 // https://vite.dev/config/
 export default defineConfig({
 	plugins: [
+		// must come before react()
+		tanstackRouter({ target: "react", autoCodeSplitting: true }),
 		tailwindcss(),
 		react(),
 		babel({ presets: [reactCompilerPreset({ sources: reactCompilerOptIn })] }),

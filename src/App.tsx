@@ -1,45 +1,14 @@
-import { createBrowserRouter, Link, Outlet, RouterProvider, type RouteObject } from "react-router"
-import { QueryClientProvider } from "@tanstack/react-query"
-import { ReactQueryDevtools} from "@tanstack/react-query-devtools"
-import { queryClient } from "./lib/queryClient"
-import { HomePage } from "./pages/HomePage"
-import HelloPage from "./pages/HelloPage"
+import { createRouter, RouterProvider } from "@tanstack/react-router"
+import { routeTree } from "./routeTree.gen"
 
+const router = createRouter({ routeTree })
 
-const routes: RouteObject[] = [
-  { path: "/", element: <Main></Main>, children: [
-    { path: "/", element: <HomePage/> },
-    { path: "/hello", element: <HelloPage />
-    },
-    { path: "/products/:pid", 
-        /* lazy load von Route-Component UND(!) loader */
-        lazy: async () => {
-          const { ProductPage, productLoader } = await import("./pages/ProductPage");
-          return { Component: ProductPage, loader: productLoader }
-        }
-    }
-  ]},
-]
-const router = createBrowserRouter(routes);
+declare module "@tanstack/react-router" {
+	interface Register {
+		router: typeof router
+	}
+}
 
-export function App() { return <RouterProvider router={router}/> }
-
-
-function Main() {
-	return (
-    <QueryClientProvider client={queryClient}>
-      <div className="grow flex flex-col overflow-y-auto self-stretch">
-        <header className="flex bg-blue-200 gap-2 self-stretch p-2">
-          {/*
-          <a href="/">Home</a><a href="/hello">Hello</a>
-          */}
-          <Link to="/">Home</Link><Link to="/hello">Hello</Link>
-        </header>
-        <div className="overflow-y-auto h-1 p-2 grow flex flex-col bg-mauve-200">
-          <Outlet></Outlet>
-        </div>
-      </div>
-      <ReactQueryDevtools />
-    </QueryClientProvider>
-	);
+export function App() {
+	return <RouterProvider router={router} />
 }
