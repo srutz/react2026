@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useQuotes } from "./hooks/useQuotes";
 
 export function App() {
   return (
@@ -8,37 +9,27 @@ export function App() {
   )
 }
 
-type QuoteType = { id: number; quote: string; author: string }
-
-
-function useQuotes() {
-  const [quotes, setQuotes] = useState<QuoteType[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [dummy,setDummy] = useState(false)
-  useEffect(() => {
-    (async () => {
-        setIsLoading(true)
-        try { //await delay(5_000)
-          const response = await fetch('https://dummyjson.com/quotes')
-          const data = await response.json()
-          setQuotes(data.quotes as QuoteType[])
-        } finally { setIsLoading(false) }
-    })()
-  }, [dummy])
-  const reload = () => setDummy(!dummy)
-  return { quotes, isLoading, reload };
-}
-
+const PAGE_SIZE = 3
 
 function Quotes() {
-  const { isLoading, quotes, reload } = useQuotes()
-  if (isLoading) {
+  const [page, setPage] = useState(1)
+  const { isLoading, data, refetch: reload } = useQuotes({ 
+    limit: PAGE_SIZE,
+    offset: (page - 1) * PAGE_SIZE
+  })
+  if (isLoading || !data) {
     return <div>laden....</div>
   }
   return (
     <ul>
-      <button onClick={() => reload()}>Reload</button>
-      {quotes.map((q) => <Quote key={q.id} quote={q}/>)}
+      <div className="flex gap-2 bg-orange-100">
+        <button onClick={() => reload()}>Reload</button>
+        <button disabled={page <= 1} onClick={() => setPage(page - 1)}
+            className="disabled:text-gray-100" 
+          >Prev</button>
+        <button onClick={() => setPage(page + 1)}>Next</button>
+      </div>
+      {(data.quotes).map((q) => <Quote key={q.id} quote={q}/>)}
     </ul>
   )
 }
