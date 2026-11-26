@@ -1,0 +1,17 @@
+[
+	{
+		"file": "other.json",
+		"name": "other",
+		"size": 16
+	},
+	{
+		"file": "products.json",
+		"name": "products",
+		"size": 391442
+	},
+	{
+		"file": "stuff.json",
+		"name": "stuff",
+		"size": 31
+	}
+]

@@ -7,3 +7,11 @@ body {
 #root {
     @apply h-1 grow flex flex-col p-2;
 }
+
+input {
+    @apply border p-1 rounded;
+}
+
+button {
+    @apply border p-1 rounded;
+}
